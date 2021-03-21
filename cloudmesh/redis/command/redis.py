@@ -1,10 +1,11 @@
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import PluginCommand
-from cloudmesh.redis.api.manager import Manager
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 from pprint import pprint
 from cloudmesh.common.debug import VERBOSE
+from cloudmesh.redis.Redis import Redis
+
 
 
 class RedisCommand(PluginCommand):
@@ -16,31 +17,35 @@ class RedisCommand(PluginCommand):
         ::
 
           Usage:
-                redis --file=FILE
-                redis list
+                redis start USER HOST PORT [DIR]
+                redis stop USER HOST PORT [DIR]
+
 
           This command does some useful things.
 
           Arguments:
-              FILE   a file name
+              USER  todo
+              HOST  todo
+              PORT  todo
+              DIR   todo
 
-          Options:
-              -f      specify the file
+          Description:
+              redis start USER HOST PORT [DIR]
+                todo
 
         """
-        arguments.FILE = arguments['--file'] or None
+
 
         VERBOSE(arguments)
 
-        m = Manager()
+        redis = Redis(host=arguments.HOST, user=arguments.USER, port=arguments.PORT, dir=arguments.DIR)
 
-        if arguments.FILE:
-            print("option a")
-            m.list(path_expand(arguments.FILE))
 
-        elif arguments.list:
-            print("option b")
-            m.list("just calling list without parameter")
+        if arguments.start:
+            redis.start()
 
-        Console.error("This is just a sample")
+        elif arguments.stop:
+            redis.stop()
+
+
         return ""
